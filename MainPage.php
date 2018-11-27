@@ -1,5 +1,6 @@
 <?php
-    if(isset($_SESSION['user'])){
+    session_start();
+    if(!isset($_SESSION['user'])){
         echo '<script language="javascript">alert("Login first...");</script>';
         header("Location: http://localhost/Survey/");
     }
@@ -17,7 +18,7 @@
    <h1 class="text-center">ADP Enterprise</h1>
    <br /><br />
    <div>
-     <p class="text-center" id="questions">Question1?</p>
+     <p class="text-center" id="questions"></p>
      <br /><br /><br />
 <!--
      <div class="col-md-3"></div>  
@@ -26,34 +27,35 @@
           <tbody>  
               <tr>
                   
-                  <td><input type="button" class="btn btn-success" id="1" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="2" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="3" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="4" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="5" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="6" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="7" value="Success" /></td>
+                  <td><input type="button" class="btn btn-success" id="Achutha" value="Achutha" /></td>
+                  <td><input type="button" class="btn btn-success" id="Sudhakara" value="Sudhakara" /></td>
+                  <td><input type="button" class="btn btn-success" id="Shivam" value="Shivam" /></td>
+                  <td><input type="button" class="btn btn-success" id="Partha" value="Partha" /></td>
+                  <td><input type="button" class="btn btn-success" id="Sailaja A" value="Sailaja A" /></td>
+                  <td><input type="button" class="btn btn-success" id="Sailaja B" value="Sailaja B" /></td>
+                  <td><input type="button" class="btn btn-success" id="Shweta" value="Shweta" /></td>
               </tr>
               <tr>
-                  <td><input type="button" class="btn btn-success" id="8" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="9" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="10" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="11" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="12" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="13" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="14" value="Success" /></td>
+                  <td><input type="button" class="btn btn-success" id="Satish" value="Satish" /></td>
+                  <td><input type="button" class="btn btn-success" id="Uma" value="Uma" /></td>
+                  <td><input type="button" class="btn btn-success" id="Ravi" value="Ravi" /></td>
+                  <td><input type="button" class="btn btn-success" id="Thulasi" value="Thulasi" /></td>
+                  <td><input type="button" class="btn btn-success" id="Prathyusha" value="Prathyusha" /></td>
+                  <td><input type="button" class="btn btn-success" id="Srikanth" value="Srikanth" /></td>
+                  <td><input type="button" class="btn btn-success" id="Beeran" value="Beeran" /></td>
               </tr>
               <tr>
-                  <td><input type="button" class="btn btn-success" id="15" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="16" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="17" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="18" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="19" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="20" value="Success" /></td>
-                  <td><input type="button" class="btn btn-success" id="21" value="Success" /></td>
+                  <td><input type="button" class="btn btn-success" id="Iliyas" value="Iliyas" /></td>
+                  <td><input type="button" class="btn btn-success" id="Anusha" value="Anusha" /></td>
+                  <td><input type="button" class="btn btn-success" id="Manmeeth" value="Manmeeth" /></td>
+                  <td><input type="button" class="btn btn-success" id="Manideep" value="Manideep" /></td>
+                  <td><input type="button" class="btn btn-success" id="Soumya" value="Soumya" /></td>
+                  <td><input type="button" class="btn btn-success" id="Karthick" value="Karthick" /></td>
+                  <td><input type="button" class="btn btn-success" id="Chandu" value="Chandu" /></td>
               </tr>
           </tbody>
        </table>
+       <button type="button" class="btn btn-primary" style="position:absolute; top:85%; right:13%; padding:10px 30px 10px;" id="back">back</button>
        <button type="button" class="btn btn-primary" style="position:absolute; top:85%; right:3%; padding:10px 30px 10px;" id="next">next</button>
 <!--     </div>
     <div class="col-md-3"></div>    -->
@@ -66,20 +68,52 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#next').hide();
+            $('#back').hide();
+            $('#next').prop('disabled', true);
+            $('#questions').text('Question1?');
             var vote = "";
             var votes=[];
-            var i=0;
+            var i=-1;
             $('input[type="button"]').click(function(event) {
                 vote = event.target.id;
-                $('#next').show();
+                $('#next').prop('disabled', false);
+            });
+
+            $('#back').click(function(event) {
+                i--;
+                if(i==-1){
+                    $('#back').hide();
+                    $('#questions').text('Question1?');        
+                }
+                else{
+                    $.ajax({
+                        type: "GET",
+                        url: "questions.php",
+                        data: {'id': i},
+                        success: function(data) {
+                            $('#questions').text(data);
+                        }
+                    });
+                }
             });
 
             $('#next').click(function(event) {
                 event.preventDefault();
-                votes.push(vote);
-                if(i==4) {
-                    window.location = 'http://localhost/Survey/thanks.html';
+                if(votes[i+1] == null) {
+                    votes.push(vote);
+                }
+                else {
+                    votes[i+1] = vote;
+                }
+                i++;
+                
+                    $('#back').show();
+                
+                
+                if(i==9) {
+                    alert(votes);
+                    
+                    window.location = 'http://localhost/Survey/thank.php';
                 }
                 $.ajax({
                     type: "GET",
@@ -89,9 +123,9 @@
                         $('#questions').text(data);
                     }
                 });
-                i++;
-                $('#next').hide();
-                if(i==4) {
+                
+                $('#next').prop('disabled', true);
+                if(i==9) {
                     $('#next').text('Submit'); 
                        
                 }
