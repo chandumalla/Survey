@@ -112,7 +112,14 @@
                 
                 if(i==9) {
                     alert(votes);
-                    
+                    $.ajax({
+                        type: "POST",
+                        url: "load.php",
+                        data: {'ans': votes},
+                        success: function(data) {
+                            alert("Saved successfully.");
+                        }
+                    });
                     window.location = 'http://localhost/Survey/thank.php';
                 }
                 $.ajax({

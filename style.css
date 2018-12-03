@@ -20,10 +20,9 @@ table td {
 }
 
 
-button #sticky {
-  
+input[type=button] {
+    width:100%;
 }
-
 
 #btn-red {
     background-color: #db0000;
